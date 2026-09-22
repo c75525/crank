@@ -1,0 +1,77 @@
+{
+  "$schema": "./posts.schema.json",
+  "posts": [
+    {
+      "id": "demo-post-003",
+      "sourceUrl": "https://www.instagram.com/",
+      "publishedAt": "2026-09-20",
+      "caption": "A three-image carousel from the local prototype index.",
+      "items": [
+        {
+          "id": "demo-post-003-01",
+          "position": 1,
+          "processedPath": "assets/placeholders/01.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Red placeholder"
+        },
+        {
+          "id": "demo-post-003-02",
+          "position": 2,
+          "processedPath": "assets/placeholders/02.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Blue placeholder"
+        },
+        {
+          "id": "demo-post-003-03",
+          "position": 3,
+          "processedPath": "assets/placeholders/03.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Yellow placeholder"
+        }
+      ]
+    },
+    {
+      "id": "demo-post-002",
+      "sourceUrl": "https://www.instagram.com/",
+      "publishedAt": "2026-09-18",
+      "caption": "Two-image post.",
+      "items": [
+        {
+          "id": "demo-post-002-01",
+          "position": 1,
+          "processedPath": "assets/placeholders/04.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Green placeholder"
+        },
+        {
+          "id": "demo-post-002-02",
+          "position": 2,
+          "processedPath": "assets/placeholders/05.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Black placeholder"
+        }
+      ]
+    },
+    {
+      "id": "demo-post-001",
+      "sourceUrl": "https://www.instagram.com/",
+      "publishedAt": "2026-09-15",
+      "caption": "Single-image post.",
+      "items": [
+        {
+          "id": "demo-post-001-01",
+          "position": 1,
+          "processedPath": "assets/placeholders/06.svg",
+          "sourceUrl": "https://www.instagram.com/",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "altText": "Grey placeholder"
+        }
+      ]
+    }
+  ]
+}
