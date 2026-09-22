@@ -16,9 +16,15 @@ The future capture process writes one canonical post index at `data/posts.json` 
 - `position`: one-based carousel position
 - `processedPath`: repository-relative optimized asset path
 
+## Carousel-description rule
+
+1. Prefer Instagram’s explicit per-carousel-item title/description when available.
+2. Otherwise, split a multi-entry post caption into its sequential entries and map entry *n* to carousel item *n*.
+3. When a carousel has one post-level description rather than multiple sequential entries, propagate that one description to every carousel item.
+
 ## Capture when available
 
-- `description`: per-carousel-item description
+- `description`: per-carousel-item description, including the propagated fallback above
 - `altText`: Instagram-provided or accessible alt text
 - per-item `sourceUrl`
 - source filename, content hash, MIME type, dimensions, duration, capture timestamp, and processing profile
