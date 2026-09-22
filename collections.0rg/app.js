@@ -63,13 +63,15 @@ function makePost(post) {
     description.hidden = !description.textContent;
     link.addEventListener('mouseenter', () => expandRow(row, link));
     link.addEventListener('focus', () => expandRow(row, link));
-    link.addEventListener('mouseleave', () => {
-      if (!row.contains(document.activeElement)) resetRow(row);
-    });
     link.addEventListener('blur', () => requestAnimationFrame(() => {
-      if (!row.contains(document.activeElement)) resetRow(row);
+      if (!row.contains(document.activeElement) && !row.matches(':hover')) resetRow(row);
     }));
     row.append(media);
+  });
+  // Keep the expanded grid stable while the pointer crosses an item edge or gap.
+  // Reset only once it leaves the entire row, not when it briefly leaves one item.
+  row.addEventListener('mouseleave', () => {
+    if (!row.contains(document.activeElement)) resetRow(row);
   });
   return fragment;
 }

@@ -41,6 +41,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 - The active image expands to exactly 150% of its measured rest width.
 - Sibling images shrink to preserve the fixed column width; the active row gap changes to 30px.
 - The active item reveals only its own caption below the image.
+- The expanded state persists while the pointer crosses an item edge or inter-item gap; it resets only after the pointer leaves the full row.
 - Caption alignment follows the item’s position in the row: left third = left aligned; middle = centered; right third = right aligned.
 - Keyboard focus has the same behavior as hover. A 1px `#111` focus outline is used.
 - Transitions are 160ms; they are removed for `prefers-reduced-motion: reduce`.
