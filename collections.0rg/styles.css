@@ -1,7 +1,7 @@
 :root {
   color: #111;
   background: #e2d9e2;
-  font-family: 'Major Mono Display', monospace;
+  font-family: 'Major Mono Display', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', monospace;
   font-size: 14px;
 }
 
@@ -31,7 +31,7 @@ a { color: inherit; }
 .site-header a:hover,
 .site-header a:focus-visible { text-decoration: underline; }
 
-#posts { padding-block: 60px; }
+#posts { padding: 60px 0 180px; }
 .post + .post { margin-top: 60px; }
 
 .post-row {

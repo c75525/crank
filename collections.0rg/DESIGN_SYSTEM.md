@@ -6,7 +6,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 
 ## Type
 
-- **Family:** Major Mono Display, with monospace fallback.
+- **Family:** Major Mono Display, followed by Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, then monospace fallback. The emoji fallbacks preserve Unicode symbols unsupported by the primary font.
 - **Base size:** 14px.
 - **Image description / post metadata:** 12px, `1.2` line height.
 - All display type inherits the site font.
@@ -27,7 +27,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 - Default image-row gap: 15px.
 - Active/hovered image-row gap: 30px.
 - Minimum vertical spacing between posts: 60px.
-- Posts container vertical padding: 60px.
+- Posts container top padding: 60px; bottom padding: 180px, reserving room for captions revealed below the final row.
 
 ## Image grid
 
