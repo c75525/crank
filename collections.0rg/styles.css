@@ -1,6 +1,6 @@
 :root {
   color: #111;
-  background: #fff;
+  background: #e2d9e2;
   font-family: 'Major Mono Display', monospace;
   font-size: 14px;
 }
@@ -23,7 +23,7 @@ a { color: inherit; }
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  background: #fff;
+  background: #e2d9e2;
   border-bottom: 1px solid #111;
 }
 
