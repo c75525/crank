@@ -49,10 +49,16 @@ a { color: inherit; }
   outline-offset: 3px;
 }
 
-.media-item img {
+.media-frame {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.media-frame img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   object-fit: cover;
   background: #eee;
 }
