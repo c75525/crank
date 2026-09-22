@@ -24,6 +24,19 @@
                 "id": { "type": "string" },
                 "position": { "type": "integer", "minimum": 1 },
                 "processedPath": { "type": "string" },
+                "responsiveSources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["path", "width"],
+                    "properties": {
+                      "path": { "type": "string" },
+                      "width": { "type": "integer", "minimum": 1 }
+                    }
+                  }
+                },
+                "intrinsicWidth": { "type": "integer", "minimum": 1 },
+                "intrinsicHeight": { "type": "integer", "minimum": 1 },
                 "sourceUrl": { "type": "string" },
                 "description": { "type": "string" },
                 "altText": { "type": "string" }

@@ -35,6 +35,12 @@ function getCaptionAlignment(position, itemCount) {
   return 'center';
 }
 
+function getImageSizes(itemCount) {
+  const desktopWidth = itemCount <= 4 ? 400 : itemCount <= 6 ? 260 : 190;
+  const mobileWidth = Math.ceil(150 / itemCount);
+  return `(min-width: 1120px) ${desktopWidth}px, ${mobileWidth}vw`;
+}
+
 function makePost(post) {
   const fragment = postTemplate.content.cloneNode(true);
   const article = fragment.querySelector('.post');
@@ -57,7 +63,12 @@ function makePost(post) {
     link.dataset.itemId = item.id;
     link.dataset.position = position + 1;
     link.dataset.captionAlignment = getCaptionAlignment(position, post.items.length);
-    image.src = item.processedPath;
+    const sources = item.responsiveSources || [{ path: item.processedPath, width: item.intrinsicWidth || 480 }];
+    image.src = sources[0].path;
+    image.srcset = sources.map(source => `${source.path} ${source.width}w`).join(', ');
+    image.sizes = getImageSizes(post.items.length);
+    if (item.intrinsicWidth) image.width = item.intrinsicWidth;
+    if (item.intrinsicHeight) image.height = item.intrinsicHeight;
     image.alt = item.altText || item.description || `Post ${post.id}, item ${position + 1}`;
     description.textContent = item.description || item.altText || '';
     description.hidden = !description.textContent;

@@ -35,9 +35,15 @@ Generate local display derivatives before publishing:
 
 This should substantially reduce the 5.3 MB pilot payload and the cost of decoding large source images, especially on mobile and when several carousel rows enter the viewport.
 
-## Validation required after optimization
+## Optimization applied — 2026-09-22
 
-- Compare total image transfer bytes before and after.
-- Check image quality at default and 150% hover sizes.
-- Verify local and deployed paths, source links, captions, keyboard focus, and row behavior.
-- Test mobile and desktop widths.
+- Original JPEG captures were retained locally under `media/incoming/archive/` and excluded from Git deployment.
+- Generated 43 local WebP derivatives: a 480px display source plus a no-upscale high-density source for every item that benefits from it.
+- Added responsive `srcset` / `sizes` and intrinsic dimensions to every gallery item.
+- The published derivative set totals **1,707,076 bytes (1.7 MB)**, compared with **5,492,392 bytes (5.3 MB)** for the previously deployed JPEG set: a **68.9% reduction** in total static gallery media bytes.
+- Validated: 4 posts, 43 responsive derivative paths, and 0 missing files; `app.js` and `posts.json` parse successfully; the gallery renders locally.
+
+## Remaining validation
+
+- Check image quality at default and 150% hover sizes on mobile and desktop after deployment.
+- Compare real browser network transfer after the GitHub Pages build completes.
