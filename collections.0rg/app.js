@@ -42,8 +42,8 @@ function makePost(post) {
   const caption = fragment.querySelector('.post-caption');
   const date = fragment.querySelector('.post-date');
   row.style.setProperty('--items', post.items.length);
-  caption.textContent = post.caption || '';
-  caption.hidden = !post.caption;
+  // Post-level captions remain indexed in data but are intentionally not shown by default.
+  caption.hidden = true;
   date.dateTime = post.publishedAt;
   date.textContent = formatDate(post.publishedAt);
   article.dataset.postId = post.id;
