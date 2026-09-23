@@ -42,7 +42,7 @@ This should substantially reduce the 5.3 MB pilot payload and the cost of decodi
 - Added responsive `srcset` / `sizes` and intrinsic dimensions to every gallery item.
 - The published derivative set totals **1,707,076 bytes (1.7 MB)**, compared with **5,492,392 bytes (5.3 MB)** for the previously deployed JPEG set: a **68.9% reduction** in total static gallery media bytes.
 - Initial optimization validation: 4 posts, 43 responsive derivative paths, and 0 missing files; `app.js` and `posts.json` parse successfully; the gallery renders locally.
-- After the 10-post expansion: 14 posts, 79 gallery items, 154 responsive derivative paths, and 0 missing files. The published derivative set is now **7,914,194 bytes (7.9 MB)**.
+- After the second 10-post expansion: 24 posts, 146 gallery items, 264 responsive derivative paths, and 0 missing files. The published derivative set is now **11,521,246 bytes (11.5 MB)**.
 
 ## Remaining validation
 
