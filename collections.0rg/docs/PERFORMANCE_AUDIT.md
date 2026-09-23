@@ -41,7 +41,8 @@ This should substantially reduce the 5.3 MB pilot payload and the cost of decodi
 - Generated 43 local WebP derivatives: a 480px display source plus a no-upscale high-density source for every item that benefits from it.
 - Added responsive `srcset` / `sizes` and intrinsic dimensions to every gallery item.
 - The published derivative set totals **1,707,076 bytes (1.7 MB)**, compared with **5,492,392 bytes (5.3 MB)** for the previously deployed JPEG set: a **68.9% reduction** in total static gallery media bytes.
-- Validated: 4 posts, 43 responsive derivative paths, and 0 missing files; `app.js` and `posts.json` parse successfully; the gallery renders locally.
+- Initial optimization validation: 4 posts, 43 responsive derivative paths, and 0 missing files; `app.js` and `posts.json` parse successfully; the gallery renders locally.
+- After the 10-post expansion: 14 posts, 79 gallery items, 154 responsive derivative paths, and 0 missing files. The published derivative set is now **7,914,194 bytes (7.9 MB)**.
 
 ## Remaining validation
 
