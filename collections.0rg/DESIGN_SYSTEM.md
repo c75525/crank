@@ -31,8 +31,8 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 
 ## Image grid
 
-- One row represents one Instagram post/carousel.
-- At rest, all items in a row have equal width using one fractional grid column per item.
+- A visual image line contains at most five items. Carousels with more than five items continue into consecutive lines within the same post.
+- At rest, all items in each line have equal width using one fractional grid column per item.
 - Images use local responsive WebP derivatives selected through `srcset` / `sizes`, fill their allocated width, and use a square display frame with `object-fit: cover`.
 - Original captures are retained locally in `media/incoming/archive/`; only optimized display derivatives publish under `media/processed/`.
 - Image links point to their source Instagram post.

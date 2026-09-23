@@ -64,44 +64,51 @@ function makePost(post) {
   const row = fragment.querySelector('.post-row');
   const caption = fragment.querySelector('.post-caption');
   const date = fragment.querySelector('.post-date');
-  row.style.setProperty('--items', post.items.length);
+  const itemsPerLine = 5;
   // Post-level captions remain indexed in data but are intentionally not shown by default.
   caption.hidden = true;
   date.dateTime = post.publishedAt;
   date.textContent = formatDate(post.publishedAt);
   article.dataset.postId = post.id;
 
-  post.items.forEach((item, position) => {
-    const media = mediaTemplate.content.cloneNode(true);
-    const link = media.querySelector('.media-item');
-    const image = media.querySelector('img');
-    const description = media.querySelector('.media-description');
-    link.href = item.sourceUrl || post.sourceUrl || '#';
-    link.dataset.itemId = item.id;
-    link.dataset.position = position + 1;
-    link.dataset.captionAlignment = getCaptionAlignment(position, post.items.length);
-    const sources = item.responsiveSources || [{ path: item.processedPath, width: item.intrinsicWidth || 480 }];
-    image.src = sources[0].path;
-    image.srcset = sources.map(source => `${source.path} ${source.width}w`).join(', ');
-    image.sizes = getImageSizes(post.items.length);
-    if (item.intrinsicWidth) image.width = item.intrinsicWidth;
-    if (item.intrinsicHeight) image.height = item.intrinsicHeight;
-    image.alt = item.altText || item.description || `Post ${post.id}, item ${position + 1}`;
-    const descriptionText = item.description || item.altText || '';
-    setDescriptionText(description, descriptionText);
-    description.hidden = !descriptionText;
-    link.addEventListener('mouseenter', () => expandRow(row, link));
-    link.addEventListener('focus', () => expandRow(row, link));
-    link.addEventListener('blur', () => requestAnimationFrame(() => {
-      if (!row.contains(document.activeElement) && !row.matches(':hover')) resetRow(row);
-    }));
-    row.append(media);
-  });
-  // Keep the expanded grid stable while the pointer crosses an item edge or gap.
-  // Reset only once it leaves the entire row, not when it briefly leaves one item.
-  row.addEventListener('mouseleave', () => {
-    if (!row.contains(document.activeElement)) resetRow(row);
-  });
+  for (let start = 0; start < post.items.length; start += itemsPerLine) {
+    const lineItems = post.items.slice(start, start + itemsPerLine);
+    const line = document.createElement('div');
+    line.className = 'media-line';
+    line.style.setProperty('--items', lineItems.length);
+
+    lineItems.forEach((item, position) => {
+      const media = mediaTemplate.content.cloneNode(true);
+      const link = media.querySelector('.media-item');
+      const image = media.querySelector('img');
+      const description = media.querySelector('.media-description');
+      link.href = item.sourceUrl || post.sourceUrl || '#';
+      link.dataset.itemId = item.id;
+      link.dataset.position = start + position + 1;
+      link.dataset.captionAlignment = getCaptionAlignment(position, lineItems.length);
+      const sources = item.responsiveSources || [{ path: item.processedPath, width: item.intrinsicWidth || 480 }];
+      image.src = sources[0].path;
+      image.srcset = sources.map(source => `${source.path} ${source.width}w`).join(', ');
+      image.sizes = getImageSizes(lineItems.length);
+      if (item.intrinsicWidth) image.width = item.intrinsicWidth;
+      if (item.intrinsicHeight) image.height = item.intrinsicHeight;
+      image.alt = item.altText || item.description || `Post ${post.id}, item ${start + position + 1}`;
+      const descriptionText = item.description || item.altText || '';
+      setDescriptionText(description, descriptionText);
+      description.hidden = !descriptionText;
+      link.addEventListener('mouseenter', () => expandRow(line, link));
+      link.addEventListener('focus', () => expandRow(line, link));
+      link.addEventListener('blur', () => requestAnimationFrame(() => {
+        if (!line.contains(document.activeElement) && !line.matches(':hover')) resetRow(line);
+      }));
+      line.append(media);
+    });
+    // Keep the expanded grid stable while the pointer crosses an item edge or gap.
+    line.addEventListener('mouseleave', () => {
+      if (!line.contains(document.activeElement)) resetRow(line);
+    });
+    row.append(line);
+  }
   return fragment;
 }
 

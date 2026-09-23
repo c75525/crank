@@ -36,6 +36,11 @@ a { color: inherit; }
 
 .post-row {
   display: grid;
+  gap: 15px;
+}
+
+.media-line {
+  display: grid;
   grid-template-columns: repeat(var(--items), minmax(0, 1fr));
   gap: 15px;
   align-items: start;
@@ -82,9 +87,9 @@ a { color: inherit; }
 .post-caption { max-width: 70ch; }
 .post-date { color: #555; }
 
-.post-row.is-expanded { gap: 30px; }
+.media-line.is-expanded { gap: 30px; }
 .media-item:focus-visible { outline: 1px solid #111; }
 
 @media (prefers-reduced-motion: reduce) {
-  .post-row { transition: none; }
+  .media-line { transition: none; }
 }
