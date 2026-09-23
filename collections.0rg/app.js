@@ -41,6 +41,23 @@ function getImageSizes(itemCount) {
   return `(min-width: 1120px) ${desktopWidth}px, ${mobileWidth}vw`;
 }
 
+function setDescriptionText(element, text) {
+  const emojiRun = /(\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*)/gu;
+  element.replaceChildren();
+  for (const part of text.split(emojiRun)) {
+    if (!part) continue;
+    if (emojiRun.test(part)) {
+      const emoji = document.createElement('span');
+      emoji.className = 'emoji';
+      emoji.textContent = part;
+      element.append(emoji);
+    } else {
+      element.append(document.createTextNode(part));
+    }
+    emojiRun.lastIndex = 0;
+  }
+}
+
 function makePost(post) {
   const fragment = postTemplate.content.cloneNode(true);
   const article = fragment.querySelector('.post');
@@ -70,8 +87,9 @@ function makePost(post) {
     if (item.intrinsicWidth) image.width = item.intrinsicWidth;
     if (item.intrinsicHeight) image.height = item.intrinsicHeight;
     image.alt = item.altText || item.description || `Post ${post.id}, item ${position + 1}`;
-    description.textContent = item.description || item.altText || '';
-    description.hidden = !description.textContent;
+    const descriptionText = item.description || item.altText || '';
+    setDescriptionText(description, descriptionText);
+    description.hidden = !descriptionText;
     link.addEventListener('mouseenter', () => expandRow(row, link));
     link.addEventListener('focus', () => expandRow(row, link));
     link.addEventListener('blur', () => requestAnimationFrame(() => {

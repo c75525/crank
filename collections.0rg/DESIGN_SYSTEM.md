@@ -6,7 +6,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 
 ## Type
 
-- **Family:** Major Mono Display, followed by Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, then monospace fallback. The emoji fallbacks preserve Unicode symbols unsupported by the primary font.
+- **Family:** Major Mono Display, followed by Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, then monospace fallback. Emoji runs are explicitly marked to use the emoji fallback stack, preserving Unicode symbols unsupported by the primary font.
 - **Base size:** 14px.
 - **Image description / post metadata:** 12px, `1.2` line height.
 - All display type inherits the site font.

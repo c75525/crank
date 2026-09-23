@@ -73,6 +73,7 @@ a { color: inherit; }
 }
 
 .media-description { display: none; }
+.emoji { font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif; }
 .media-item:is(:hover, :focus) .media-description { display: block; }
 .media-item[data-caption-alignment="left"] .media-description { text-align: left; }
 .media-item[data-caption-alignment="center"] .media-description { text-align: center; }
