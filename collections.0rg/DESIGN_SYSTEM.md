@@ -15,7 +15,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Page / sticky-header background | `#e2d9e2` | Entire site background and header fill |
+| Page / sticky-header background | `#f1c9c2` | Entire site background and header fill |
 | Primary text / rules | `#111` | Text, link color, border |
 | Muted metadata | `#555` | Date text |
 
