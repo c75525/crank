@@ -20,4 +20,5 @@
 - It then scales and rises into the exact 835.54px target square.
 - As the next square starts, the previously expanded square springs back to its stack position, allowing one active large square at a time.
 - Scrolling backward reverses the same continuous positions.
-- With reduced motion enabled, the scroll sequence is shortened to one viewport height.
+- When scrolling pauses, the sequence snaps to the nearest completed state: before the 50% point it returns to the prior state; from the 50% point it completes the current square.
+- With reduced motion enabled, the scroll sequence is shortened to one viewport height and snapping is immediate.

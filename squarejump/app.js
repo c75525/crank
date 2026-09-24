@@ -36,8 +36,12 @@ function setSquare(square, x, y, size) {
   square.setAttribute('height', size);
 }
 
+function getMaxScroll() {
+  return Math.max(1, stage.offsetHeight - innerHeight);
+}
+
 function render() {
-  const maxScroll = Math.max(1, stage.offsetHeight - innerHeight);
+  const maxScroll = getMaxScroll();
   const scrollProgress = clamp(scrollY / maxScroll);
   const sequence = scrollProgress * count;
   const activeIndex = Math.min(count - 1, Math.floor(sequence));
@@ -71,6 +75,29 @@ function render() {
   });
 }
 
-addEventListener('scroll', render, { passive: true });
+let snapTimer;
+let snapTarget = null;
+
+function snapToCompletedState() {
+  const maxScroll = getMaxScroll();
+  const sequence = clamp(scrollY / maxScroll) * count;
+  const completedStep = Math.round(sequence);
+  const targetY = completedStep / count * maxScroll;
+  if (Math.abs(scrollY - targetY) < 2 || snapTarget === targetY) return;
+  snapTarget = targetY;
+  scrollTo({
+    top: targetY,
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+  });
+}
+
+addEventListener('scroll', () => {
+  render();
+  clearTimeout(snapTimer);
+  snapTimer = setTimeout(() => {
+    snapTarget = null;
+    snapToCompletedState();
+  }, 140);
+}, { passive: true });
 addEventListener('resize', render);
 render();
