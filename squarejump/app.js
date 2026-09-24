@@ -3,7 +3,7 @@ const stage = document.querySelector('#scroll-stage');
 const NS = 'http://www.w3.org/2000/svg';
 const count = 8;
 const initial = { x: 493.97, y: 130.23, size: 91.6, gap: 14.65 };
-const compact = { x: 466.89 };
+const compact = { x: 493.97 };
 const target = { x: 631.46, y: 130.03, size: 835.54 };
 const squaresRoot = document.querySelector('#menu-squares');
 const squares = Array.from({ length: count }, (_, index) => {
