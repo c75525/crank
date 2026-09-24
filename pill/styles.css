@@ -1,0 +1,44 @@
+:root {
+  color: #000;
+  background: #fffbcf;
+  font-family: Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  overflow-x: clip;
+}
+
+main {
+  width: min(calc(100% - 40px), 1400px);
+  padding-block: 160px;
+}
+
+#scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+#interactive-slider {
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+
+#interactive-slider:focus-visible path {
+  stroke: #fff;
+  stroke-width: 6px;
+}
+
+#interactive-slider.is-dragging { cursor: grabbing; }
+
+@media (max-width: 600px) {
+  main { width: min(calc(100% - 20px), 1400px); padding-block: 100px; }
+}
