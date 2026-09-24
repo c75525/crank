@@ -1,6 +1,6 @@
 :root {
   color: #111;
-  background: #f1c9c2;
+  background: #fffbcf;
   font-family: 'Major Mono Display', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', monospace;
   font-size: 14px;
 }
@@ -23,7 +23,7 @@ a { color: inherit; }
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  background: #f1c9c2;
+  background: #fffbcf;
   border-bottom: 1px solid #111;
 }
 

@@ -14,8 +14,8 @@ A sparse interactive mechanism study. The SVG artwork is the visual focus; the s
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Page background | `#f7f6f3` | Mechanism canvas background |
-| Header background | `#fff` | Header fill |
+| Page background | `#fffbcf` | Mechanism canvas background |
+| Header background | `#fffbcf` | Header fill |
 | Main mechanism brown | `#534741` | SVG outlines, primary text |
 | Secondary header border | `#c9c5c1` | Header divider |
 | Instruction text | `#6e625b` | Instruction copy |
