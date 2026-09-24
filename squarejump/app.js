@@ -53,10 +53,11 @@ function render() {
 
   squares.forEach((square, index) => {
     const baseY = initial.y + index * (initial.size + initial.gap);
-    const baseX = index === 0 ? initial.x : compact.x;
+    const baseX = compact.x;
 
     if (index === activeIndex) {
-      const x = lerp(baseX, target.x, slideProgress);
+      const entryX = activeIndex === 0 ? initial.x : compact.x;
+      const x = lerp(entryX, target.x, slideProgress);
       const y = lerp(baseY, target.y, scaleProgress);
       const size = lerp(initial.size, target.size, scaleProgress);
       setSquare(square, x, y, size);
@@ -77,11 +78,13 @@ function render() {
 
 let snapTimer;
 let snapTarget = null;
+let lastScrollY = scrollY;
+let scrollDirection = 0;
 
 function snapToCompletedState() {
   const maxScroll = getMaxScroll();
   const sequence = clamp(scrollY / maxScroll) * count;
-  const completedStep = Math.round(sequence);
+  const completedStep = scrollDirection >= 0 ? Math.ceil(sequence) : Math.floor(sequence);
   const targetY = completedStep / count * maxScroll;
   if (Math.abs(scrollY - targetY) < 2 || snapTarget === targetY) return;
   snapTarget = targetY;
@@ -92,6 +95,9 @@ function snapToCompletedState() {
 }
 
 addEventListener('scroll', () => {
+  const delta = scrollY - lastScrollY;
+  if (Math.abs(delta) > 0.5) scrollDirection = Math.sign(delta);
+  lastScrollY = scrollY;
   render();
   clearTimeout(snapTimer);
   snapTimer = setTimeout(() => {
