@@ -15,21 +15,10 @@ function setTransform(element, value) {
   element.setAttribute('transform', value);
 }
 
-function loadSvg() {
-  return fetch('./pill.svg')
-    .then(response => {
-      if (!response.ok) throw new Error(`SVG request failed (${response.status})`);
-      return response.text();
-    })
-    .then(markup => new DOMParser().parseFromString(markup, 'image/svg+xml').documentElement);
-}
-
-function setup(svg) {
-  svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', 'Pill mechanism with a draggable yellow slider');
-  scene.append(document.importNode(svg, true));
-
+function setup() {
   const illustration = scene.querySelector('svg');
+  illustration.setAttribute('role', 'img');
+  illustration.setAttribute('aria-label', 'Pill mechanism with a draggable yellow slider');
   const assembly = [...illustration.children].find(element => element.localName === 'g');
   const outerPill = [...assembly.children].find(element => element.localName === 'rect');
   const contents = [...assembly.children].find(element => element.localName === 'g');
@@ -42,24 +31,16 @@ function setup(svg) {
   snakeTrack.setAttribute('stroke', 'none');
   contents.append(snakeTrack);
   const trackLength = snakeTrack.getTotalLength();
-  const orbStarts = orbs.map(orb => {
-    const box = orb.getBBox();
-    const center = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-    let closestDistance = 0;
-    let closestPoint = snakeTrack.getPointAtLength(0);
-    let closestDifference = Infinity;
-    for (let step = 0; step <= 2000; step += 1) {
-      const distance = trackLength * step / 2000;
-      const point = snakeTrack.getPointAtLength(distance);
-      const difference = (point.x - center.x) ** 2 + (point.y - center.y) ** 2;
-      if (difference < closestDifference) {
-        closestDistance = distance;
-        closestPoint = point;
-        closestDifference = difference;
-      }
-    }
-    return { center, distance: closestDistance, point: closestPoint };
-  });
+  const straight = 944.65 - 537.98;
+  const halfArc = Math.PI * 141.55;
+  const orbStarts = [
+    { center: { x: 537.98, y: 66.42 }, distance: 0 },
+    { center: { x: 741.31, y: 66.42 }, distance: straight / 2 },
+    { center: { x: 944.65, y: 66.42 }, distance: straight },
+    { center: { x: 944.65, y: 349.52 }, distance: straight + halfArc },
+    { center: { x: 741.31, y: 349.52 }, distance: straight + halfArc + straight / 2 },
+    { center: { x: 537.98, y: 349.52 }, distance: straight + halfArc + straight }
+  ];
 
   sliderGroup.id = 'interactive-slider';
   sliderGroup.setAttribute('tabindex', '0');
@@ -131,7 +112,4 @@ function setup(svg) {
   render();
 }
 
-loadSvg().then(setup).catch(error => {
-  scene.textContent = 'The pill graphic could not be loaded.';
-  console.error(error);
-});
+setup();
