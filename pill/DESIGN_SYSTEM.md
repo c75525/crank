@@ -13,7 +13,7 @@ An interactive test derived directly from `pill.svg`. The yellow circular slider
 
 ## Layout
 
-- The illustration is centered in a maximum 1400px content area.
+- The resting illustration is centered in the viewport within a maximum 1300px content area.
 - Horizontal inset is 20px desktop and 10px mobile.
 - The SVG permits overflow so the black pill remains visible as it rotates.
 

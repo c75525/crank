@@ -15,9 +15,15 @@ body {
 }
 
 main {
-  width: min(calc(100% - 40px), 1400px);
-  padding-block: 160px;
+  width: min(calc(100% - 40px), 1300px);
+  min-height: 100vh;
+  margin: auto;
+  padding-block: 100px;
+  display: grid;
+  place-items: center;
 }
+
+#scene { width: 100%; }
 
 #scene svg {
   display: block;
@@ -40,5 +46,5 @@ main {
 #interactive-slider.is-dragging { cursor: grabbing; }
 
 @media (max-width: 600px) {
-  main { width: min(calc(100% - 20px), 1400px); padding-block: 100px; }
+  main { width: min(calc(100% - 20px), 1300px); padding-block: 80px; }
 }
