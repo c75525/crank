@@ -21,4 +21,5 @@
 - As the next square starts, the previously expanded square springs back to its stack position, allowing one active large square at a time.
 - Scrolling backward reverses the same continuous positions.
 - Scroll input is step-locked: each gesture can move only to the immediately adjacent completed state. Scrolling down completes the next square; scrolling up returns to the prior completed state. Further scroll input is ignored until that snap finishes.
+- Both directions use the same 550ms cubic ease-in-out snap timing; reduced-motion users receive an immediate snap.
 - With reduced motion enabled, the scroll sequence is shortened to one viewport height and snapping is immediate.

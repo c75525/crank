@@ -82,6 +82,7 @@ let pendingDirection = 0;
 let settledStep = 0;
 let isSnapping = false;
 let snapTargetStep = 0;
+let snapFrame;
 
 function finishSnap() {
   if (!isSnapping) return;
@@ -90,25 +91,45 @@ function finishSnap() {
   lastScrollY = scrollY;
 }
 
+function easeInOutCubic(progress) {
+  return progress < 0.5
+    ? 4 * progress ** 3
+    : 1 - (-2 * progress + 2) ** 3 / 2;
+}
+
+function animateSnap(targetY) {
+  const startY = scrollY;
+  const distance = targetY - startY;
+  const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 550;
+  const startedAt = performance.now();
+
+  function tick(now) {
+    const progress = duration === 0 ? 1 : clamp((now - startedAt) / duration);
+    scrollTo(0, lerp(startY, targetY, easeInOutCubic(progress)));
+    if (progress < 1) {
+      snapFrame = requestAnimationFrame(tick);
+    } else {
+      finishSnap();
+    }
+  }
+
+  cancelAnimationFrame(snapFrame);
+  snapFrame = requestAnimationFrame(tick);
+}
+
 function requestAdjacentStep(direction) {
   if (isSnapping || direction === 0) return;
   const nextStep = clamp(settledStep + Math.sign(direction), 0, count);
   if (nextStep === settledStep) return;
   isSnapping = true;
   snapTargetStep = nextStep;
-  const targetY = nextStep / count * getMaxScroll();
-  scrollTo({
-    top: targetY,
-    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
-  });
+  animateSnap(nextStep / count * getMaxScroll());
 }
 
 function scheduleSettle() {
+  if (isSnapping) return;
   clearTimeout(settleTimer);
-  settleTimer = setTimeout(() => {
-    if (isSnapping) finishSnap();
-    else requestAdjacentStep(pendingDirection);
-  }, 160);
+  settleTimer = setTimeout(() => requestAdjacentStep(pendingDirection), 160);
 }
 
 addEventListener('wheel', event => {
