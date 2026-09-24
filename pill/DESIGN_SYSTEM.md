@@ -20,7 +20,8 @@ An interactive test derived directly from `pill.svg`. The yellow circular slider
 ## Interaction
 
 - Drag the yellow slider from its left start point to its right endpoint.
-- At full travel, the colored-orb group rotates exactly three complete turns (1080°) about the inner pill’s center.
+- The colored orbs travel the capsule-shaped path surrounding the inner slider container, preserving their individual offsets like a continuous snake.
+- At full travel, every colored orb completes exactly three laps of that capsule path.
 - At full travel, the outer black pill rotates exactly one complete turn (360°) about its own center.
 - Motion is proportional and directly follows slider position; there is no autonomous animation.
 - The yellow slider supports keyboard operation: arrow keys adjust by 2%, Home resets, and End completes the motion.

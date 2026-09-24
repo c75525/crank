@@ -1,7 +1,6 @@
 const scene = document.querySelector('#scene');
 const NS = 'http://www.w3.org/2000/svg';
 const centers = {
-  orbit: { x: 747.58, y: 199.43 },
   outer: { x: 747.58, y: 207.85 }
 };
 const slider = { startX: 518.04, endX: 977.12 };
@@ -35,10 +34,32 @@ function setup(svg) {
   const outerPill = [...assembly.children].find(element => element.localName === 'rect');
   const contents = [...assembly.children].find(element => element.localName === 'g');
   const [green, orange, red, pink, purple, teal, track, sliderGroup] = [...contents.children];
-  const orbGroup = document.createElementNS(NS, 'g');
-  orbGroup.id = 'orbiting-orbs';
-  contents.insertBefore(orbGroup, green);
-  [green, orange, red, pink, purple, teal].forEach(orb => orbGroup.append(orb));
+  const orbs = [green, orange, red, pink, purple, teal];
+  const snakeTrack = document.createElementNS(NS, 'path');
+  // This capsule follows the centers of the supplied orb positions around the slider container.
+  snakeTrack.setAttribute('d', 'M 537.98 66.42 H 944.65 A 141.55 141.55 0 0 1 944.65 349.52 H 537.98 A 141.55 141.55 0 0 1 537.98 66.42 Z');
+  snakeTrack.setAttribute('fill', 'none');
+  snakeTrack.setAttribute('stroke', 'none');
+  contents.append(snakeTrack);
+  const trackLength = snakeTrack.getTotalLength();
+  const orbStarts = orbs.map(orb => {
+    const box = orb.getBBox();
+    const center = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    let closestDistance = 0;
+    let closestPoint = snakeTrack.getPointAtLength(0);
+    let closestDifference = Infinity;
+    for (let step = 0; step <= 2000; step += 1) {
+      const distance = trackLength * step / 2000;
+      const point = snakeTrack.getPointAtLength(distance);
+      const difference = (point.x - center.x) ** 2 + (point.y - center.y) ** 2;
+      if (difference < closestDifference) {
+        closestDistance = distance;
+        closestPoint = point;
+        closestDifference = difference;
+      }
+    }
+    return { center, distance: closestDistance, point: closestPoint };
+  });
 
   sliderGroup.id = 'interactive-slider';
   sliderGroup.setAttribute('tabindex', '0');
@@ -51,7 +72,11 @@ function setup(svg) {
 
   function render() {
     setTransform(outerPill, `rotate(${progress * 360} ${centers.outer.x} ${centers.outer.y})`);
-    setTransform(orbGroup, `rotate(${progress * 1080} ${centers.orbit.x} ${centers.orbit.y})`);
+    orbs.forEach((orb, index) => {
+      const start = orbStarts[index];
+      const point = snakeTrack.getPointAtLength((start.distance + progress * trackLength * 3) % trackLength);
+      setTransform(orb, `translate(${point.x - start.center.x} ${point.y - start.center.y})`);
+    });
     setTransform(sliderGroup, `translate(${progress * (slider.endX - slider.startX)} 0)`);
     sliderGroup.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
   }
