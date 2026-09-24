@@ -1,6 +1,7 @@
 const postsRoot = document.querySelector('#posts');
 const postTemplate = document.querySelector('#post-template');
 const mediaTemplate = document.querySelector('#media-template');
+const imageLines = [];
 
 function formatDate(value) {
   return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
@@ -58,6 +59,36 @@ function setDescriptionText(element, text) {
   }
 }
 
+function queueImage(image, sources) {
+  image.dataset.src = sources[0].path;
+  image.dataset.srcset = sources.map(source => `${source.path} ${source.width}w`).join(', ');
+}
+
+function loadImage(image, highPriority) {
+  return new Promise(resolve => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+    image.addEventListener('load', finish, { once: true });
+    image.addEventListener('error', finish, { once: true });
+    image.loading = 'eager';
+    image.fetchPriority = highPriority ? 'high' : 'auto';
+    image.srcset = image.dataset.srcset;
+    image.src = image.dataset.src;
+    if (image.complete) queueMicrotask(finish);
+    setTimeout(finish, 15000);
+  });
+}
+
+async function loadImagesTopToBottom() {
+  for (const [lineIndex, line] of imageLines.entries()) {
+    await Promise.all(line.map(image => loadImage(image, lineIndex === 0)));
+  }
+}
+
 function makePost(post) {
   const fragment = postTemplate.content.cloneNode(true);
   const article = fragment.querySelector('.post');
@@ -76,6 +107,7 @@ function makePost(post) {
     const line = document.createElement('div');
     line.className = 'media-line';
     line.style.setProperty('--items', lineItems.length);
+    const lineImages = [];
 
     lineItems.forEach((item, position) => {
       const media = mediaTemplate.content.cloneNode(true);
@@ -87,8 +119,7 @@ function makePost(post) {
       link.dataset.position = start + position + 1;
       link.dataset.captionAlignment = getCaptionAlignment(position, lineItems.length);
       const sources = item.responsiveSources || [{ path: item.processedPath, width: item.intrinsicWidth || 480 }];
-      image.src = sources[0].path;
-      image.srcset = sources.map(source => `${source.path} ${source.width}w`).join(', ');
+      queueImage(image, sources);
       image.sizes = getImageSizes(lineItems.length);
       if (item.intrinsicWidth) image.width = item.intrinsicWidth;
       if (item.intrinsicHeight) image.height = item.intrinsicHeight;
@@ -101,8 +132,10 @@ function makePost(post) {
       link.addEventListener('blur', () => requestAnimationFrame(() => {
         if (!line.contains(document.activeElement) && !line.matches(':hover')) resetRow(line);
       }));
+      lineImages.push(image);
       line.append(media);
     });
+    imageLines.push(lineImages);
     // Keep the expanded grid stable while the pointer crosses an item edge or gap.
     line.addEventListener('mouseleave', () => {
       if (!line.contains(document.activeElement)) resetRow(line);
@@ -118,6 +151,7 @@ async function render() {
     if (!response.ok) throw new Error(`Index request failed (${response.status})`);
     const index = await response.json();
     index.posts.forEach(post => postsRoot.append(makePost(post)));
+    loadImagesTopToBottom();
   } catch (error) {
     postsRoot.textContent = 'The post index could not be loaded.';
     console.error(error);

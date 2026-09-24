@@ -44,6 +44,12 @@ This should substantially reduce the 5.3 MB pilot payload and the cost of decodi
 - Initial optimization validation: 4 posts, 43 responsive derivative paths, and 0 missing files; `app.js` and `posts.json` parse successfully; the gallery renders locally.
 - After the second 10-post expansion: 24 posts, 146 gallery items, 264 responsive derivative paths, and 0 missing files. The published derivative set is now **11,521,246 bytes (11.5 MB)**.
 
+## Loading-order optimization — 2026-09-23
+
+- Gallery sources are now assigned by a controlled line queue rather than all at once.
+- The first visible five-image line is requested immediately with high priority; each subsequent line begins only after the line above settles (load, error, or a 15-second safety timeout).
+- This makes delivery deterministic from top to bottom and prevents lower gallery rows from competing with the initial viewport.
+
 ## Remaining validation
 
 - Check image quality at default and 150% hover sizes on mobile and desktop after deployment.
