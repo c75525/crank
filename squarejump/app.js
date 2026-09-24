@@ -76,34 +76,53 @@ function render() {
   });
 }
 
-let snapTimer;
-let snapTarget = null;
+let settleTimer;
 let lastScrollY = scrollY;
-let scrollDirection = 0;
+let pendingDirection = 0;
+let settledStep = 0;
+let isSnapping = false;
+let snapTargetStep = 0;
 
-function snapToCompletedState() {
-  const maxScroll = getMaxScroll();
-  const sequence = clamp(scrollY / maxScroll) * count;
-  const completedStep = scrollDirection >= 0 ? Math.ceil(sequence) : Math.floor(sequence);
-  const targetY = completedStep / count * maxScroll;
-  if (Math.abs(scrollY - targetY) < 2 || snapTarget === targetY) return;
-  snapTarget = targetY;
+function finishSnap() {
+  if (!isSnapping) return;
+  settledStep = snapTargetStep;
+  isSnapping = false;
+  lastScrollY = scrollY;
+}
+
+function requestAdjacentStep(direction) {
+  if (isSnapping || direction === 0) return;
+  const nextStep = clamp(settledStep + Math.sign(direction), 0, count);
+  if (nextStep === settledStep) return;
+  isSnapping = true;
+  snapTargetStep = nextStep;
+  const targetY = nextStep / count * getMaxScroll();
   scrollTo({
     top: targetY,
     behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
   });
 }
 
+function scheduleSettle() {
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(() => {
+    if (isSnapping) finishSnap();
+    else requestAdjacentStep(pendingDirection);
+  }, 160);
+}
+
+addEventListener('wheel', event => {
+  event.preventDefault();
+  pendingDirection = Math.sign(event.deltaY);
+  requestAdjacentStep(pendingDirection);
+}, { passive: false });
+
 addEventListener('scroll', () => {
   const delta = scrollY - lastScrollY;
-  if (Math.abs(delta) > 0.5) scrollDirection = Math.sign(delta);
+  if (Math.abs(delta) > 0.5) pendingDirection = Math.sign(delta);
   lastScrollY = scrollY;
   render();
-  clearTimeout(snapTimer);
-  snapTimer = setTimeout(() => {
-    snapTarget = null;
-    snapToCompletedState();
-  }, 140);
+  scheduleSettle();
 }, { passive: true });
 addEventListener('resize', render);
 render();
