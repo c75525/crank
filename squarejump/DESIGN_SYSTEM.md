@@ -2,7 +2,7 @@
 
 ## Source geometry
 
-- `Menu.svg` defines the resting menu: eight black 91.6px squares in a vertical stack on `#d32a00`.
+- `Menu.svg` defines the resting geometry: eight 91.6px squares in a vertical stack.
 - `Menu with 1st Item Populated.svg` defines the target: a black `835.54px × 835.54px` square at `(631.46, 130.03)`.
 - The target side length is exactly the source stack’s full vertical height.
 - `animation-path.png` is the supplied interaction reference and is retained as source documentation, not displayed in the site.
@@ -10,7 +10,7 @@
 ## Layout
 
 - The scene uses the SVG’s original 1920 × 1080 coordinate system and fills the viewport.
-- The canvas/background is `#d32a00`; the eight squares use a distinct dark-to-light red sequence (`#4d0905` through `#f3794d`). Each item retains its shade when expanded.
+- The canvas/background is `#fffbcf`, matching the other test sites. The eight squares use a distinct dark-to-light red sequence (`#4d0905` through `#f3794d`). Each item retains its shade when expanded.
 - There is no added copy, navigation, or decoration.
 
 ## Scroll interaction
