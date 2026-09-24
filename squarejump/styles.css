@@ -31,8 +31,6 @@ body {
   background: #d32a00;
 }
 
-.menu-square { fill: #000; }
-
 @media (prefers-reduced-motion: reduce) {
   #scroll-stage { height: 100vh; }
 }

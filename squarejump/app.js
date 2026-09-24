@@ -5,11 +5,13 @@ const count = 8;
 const initial = { x: 493.97, y: 130.23, size: 91.6, gap: 14.65 };
 const compact = { x: 493.97 };
 const target = { x: 631.46, y: 130.03, size: 835.54 };
+const reds = ['#4d0905', '#651008', '#7e190b', '#98240f', '#b43116', '#cc4020', '#e65731', '#f3794d'];
 const squaresRoot = document.querySelector('#menu-squares');
 const squares = Array.from({ length: count }, (_, index) => {
   const square = document.createElementNS(NS, 'rect');
   square.classList.add('menu-square');
   square.dataset.index = index;
+  square.setAttribute('fill', reds[index]);
   squaresRoot.append(square);
   return square;
 });

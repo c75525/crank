@@ -10,7 +10,7 @@
 ## Layout
 
 - The scene uses the SVG’s original 1920 × 1080 coordinate system and fills the viewport.
-- The canvas/background is `#d32a00`; menu squares are black.
+- The canvas/background is `#d32a00`; the eight squares use a distinct dark-to-light red sequence (`#4d0905` through `#f3794d`). Each item retains its shade when expanded.
 - There is no added copy, navigation, or decoration.
 
 ## Scroll interaction
