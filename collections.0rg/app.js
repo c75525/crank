@@ -1,16 +1,65 @@
+import * as easing from './vendor/pmndrs-math-time-easing.js';
+
 const postsRoot = document.querySelector('#posts');
 const postTemplate = document.querySelector('#post-template');
 const mediaTemplate = document.querySelector('#media-template');
 const imageLines = [];
+const rowAnimations = new WeakMap();
 
 function formatDate(value) {
   return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
     .format(new Date(`${value}T12:00:00`));
 }
 
+function getRowWidths(row) {
+  return getComputedStyle(row).gridTemplateColumns.split(' ').map(Number.parseFloat);
+}
+
+function setRowLayout(row, widths, gap) {
+  row.style.gridTemplateColumns = widths.map(width => `${Math.max(width, 0)}px`).join(' ');
+  row.style.gap = `${gap}px`;
+}
+
+function animateRow(row, targetWidths, targetGap, onComplete) {
+  cancelAnimationFrame(rowAnimations.get(row));
+  const initialWidths = getRowWidths(row);
+  const initialGap = Number.parseFloat(getComputedStyle(row).gap);
+  const startedAt = performance.now();
+  const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 160;
+
+  function tick(now) {
+    const progress = duration === 0 ? 1 : Math.min(1, (now - startedAt) / duration);
+    const eased = easing.cubicInOut(progress);
+    const widths = targetWidths.map((width, index) =>
+      initialWidths[index] + (width - initialWidths[index]) * eased
+    );
+    setRowLayout(row, widths, initialGap + (targetGap - initialGap) * eased);
+    if (progress < 1) {
+      rowAnimations.set(row, requestAnimationFrame(tick));
+    } else {
+      rowAnimations.delete(row);
+      onComplete?.();
+    }
+  }
+
+  rowAnimations.set(row, requestAnimationFrame(tick));
+}
+
 function resetRow(row) {
-  row.classList.remove('is-expanded');
-  row.style.removeProperty('grid-template-columns');
+  const items = [...row.querySelectorAll('.media-item')];
+  if (items.length < 2) {
+    row.classList.remove('is-expanded');
+    row.style.removeProperty('grid-template-columns');
+    row.style.removeProperty('gap');
+    return;
+  }
+  const restingGap = 15;
+  const restingWidth = (row.getBoundingClientRect().width - restingGap * (items.length - 1)) / items.length;
+  animateRow(row, Array(items.length).fill(restingWidth), restingGap, () => {
+    row.classList.remove('is-expanded');
+    row.style.removeProperty('grid-template-columns');
+    row.style.removeProperty('gap');
+  });
 }
 
 function expandRow(row, activeItem) {
@@ -25,8 +74,8 @@ function expandRow(row, activeItem) {
   const otherWidth = (rowWidth - activeWidth - expandedGap * (items.length - 1)) / (items.length - 1);
   const widths = items.map(item => item === activeItem ? activeWidth : otherWidth);
 
-  row.style.gridTemplateColumns = widths.map(width => `${Math.max(width, 0)}px`).join(' ');
   row.classList.add('is-expanded');
+  animateRow(row, widths, expandedGap);
 }
 
 function getCaptionAlignment(position, itemCount) {

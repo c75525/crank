@@ -45,7 +45,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 - The expanded state persists while the pointer crosses an item edge or inter-item gap; it resets only after the pointer leaves the full row.
 - Caption alignment follows the item’s position in the row: left third = left aligned; middle = centered; right third = right aligned.
 - Keyboard focus has the same behavior as hover. A 1px `#111` focus outline is used.
-- Transitions are 160ms; they are removed for `prefers-reduced-motion: reduce`.
+- Column-width and gap transitions are 160ms and use `pmndrs/math`’s `easing.cubicInOut`; they are removed for `prefers-reduced-motion: reduce`. Only the locally vendored `math/time` easing submodule is included.
 
 ## Content rule
 

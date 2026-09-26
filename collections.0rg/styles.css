@@ -44,7 +44,6 @@ a { color: inherit; }
   grid-template-columns: repeat(var(--items), minmax(0, 1fr));
   gap: 15px;
   align-items: start;
-  transition: gap 160ms ease, grid-template-columns 160ms ease;
 }
 
 .media-item {
@@ -90,6 +89,3 @@ a { color: inherit; }
 .media-line.is-expanded { gap: 30px; }
 .media-item:focus-visible { outline: 1px solid #111; }
 
-@media (prefers-reduced-motion: reduce) {
-  .media-line { transition: none; }
-}
