@@ -22,4 +22,5 @@
 - Scrolling backward reverses the same continuous positions.
 - Scroll input is step-locked: each gesture can move only to the immediately adjacent completed state. Scrolling down completes the next square; scrolling up returns to the prior completed state. Further scroll input is ignored until that snap finishes.
 - Both directions use the same 550ms cubic ease-in-out snap timing; reduced-motion users receive an immediate snap.
+- The snap curve uses `easing.cubicInOut` from the locally vendored `pmndrs/math` `math/time` module. Only that 1.6KB easing submodule is included; no unrelated math domains ship with the site.
 - With reduced motion enabled, the scroll sequence is shortened to one viewport height and snapping is immediate.

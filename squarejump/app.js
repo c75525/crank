@@ -1,3 +1,5 @@
+import * as easing from './vendor/pmndrs-math-time-easing.js';
+
 const svg = document.querySelector('#menu');
 const stage = document.querySelector('#scroll-stage');
 const NS = 'http://www.w3.org/2000/svg';
@@ -93,12 +95,6 @@ function finishSnap() {
   lastScrollY = scrollY;
 }
 
-function easeInOutCubic(progress) {
-  return progress < 0.5
-    ? 4 * progress ** 3
-    : 1 - (-2 * progress + 2) ** 3 / 2;
-}
-
 function animateSnap(targetY) {
   const startY = scrollY;
   const distance = targetY - startY;
@@ -107,7 +103,7 @@ function animateSnap(targetY) {
 
   function tick(now) {
     const progress = duration === 0 ? 1 : clamp((now - startedAt) / duration);
-    scrollTo(0, lerp(startY, targetY, easeInOutCubic(progress)));
+    scrollTo(0, lerp(startY, targetY, easing.cubicInOut(progress)));
     if (progress < 1) {
       snapFrame = requestAnimationFrame(tick);
     } else {
