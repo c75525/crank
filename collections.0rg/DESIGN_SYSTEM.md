@@ -35,6 +35,7 @@ A minimal single-column archive for Instagram-derived carousel posts. Images are
 - At rest, all items in each line have equal width using one fractional grid column per item.
 - Images use local responsive WebP derivatives selected through `srcset` / `sizes`, fill their allocated width, and use a square display frame with `object-fit: cover`.
 - Original captures are retained locally in `media/incoming/archive/`; only optimized display derivatives publish under `media/processed/`.
+- Each image line reveals as a unit after its images load: 420ms from 12px-lowered / 12px-blurred to sharp. Lines reveal in top-to-bottom queue order; reduced-motion users receive no reveal transition.
 - Image links point to their source Instagram post.
 
 ## Hover and focus behavior

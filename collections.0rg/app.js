@@ -132,9 +132,16 @@ function loadImage(image, highPriority) {
   });
 }
 
+function wait(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
 async function loadImagesTopToBottom() {
+  const revealDelay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 420;
   for (const [lineIndex, line] of imageLines.entries()) {
     await Promise.all(line.map(image => loadImage(image, lineIndex === 0)));
+    line[0]?.closest('.media-line')?.classList.add('is-revealed');
+    if (revealDelay) await wait(revealDelay);
   }
 }
 
